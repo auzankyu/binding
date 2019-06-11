@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.bankmandiri.helloandroid2.R;
+import com.bankmandiri.helloandroid2.detail.OnItemClickListener;
 import com.bankmandiri.helloandroid2.model.Todo;
 import com.bankmandiri.helloandroid2.databinding.ItemTodoBinding;
 import com.bankmandiri.helloandroid2.databinding.ItemTodoDoneBinding;
@@ -19,9 +20,12 @@ import java.util.List;
 public class TodoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>  {
 
     private List<Todo> todos;
+    private final OnItemClickListener listener;
 
-    public  TodoAdapter(List<Todo> todos) {
+    public  TodoAdapter(List<Todo> todos, OnItemClickListener listener) {
+
         this.todos = todos;
+        this.listener = listener;
     }
 
     @NonNull
@@ -52,7 +56,7 @@ public class TodoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>  
                 break;
             default:
                 TodoViewHolder todoViewHolder = (TodoViewHolder) viewHolder;
-                todoViewHolder.bind(todos.get(position));
+                todoViewHolder.bind(todos.get(position), listener);
         }
     }
 

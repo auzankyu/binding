@@ -1,5 +1,6 @@
 package com.bankmandiri.helloandroid2;
 
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -10,8 +11,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.bankmandiri.helloandroid2.activity.DetailActivity;
 import com.bankmandiri.helloandroid2.adapter.TodoAdapter;
 import com.bankmandiri.helloandroid2.databinding.ActivityMainBinding;
+import com.bankmandiri.helloandroid2.detail.OnItemClickListener;
 import com.bankmandiri.helloandroid2.dialog.AddDialog;
 import com.bankmandiri.helloandroid2.dialog.AddDialogListener;
 import com.bankmandiri.helloandroid2.model.Todo;
@@ -39,7 +42,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         List<Todo> users = new ArrayList<>();
         users.add(new Todo("lazuardi", false));
         users.add(new Todo("auzan", true));
-        adapter = new TodoAdapter(users);
+        adapter = new TodoAdapter(users, new OnItemClickListener() {
+            @Override
+            public void onItemClick(Todo todo) {
+                Toast.makeText(MainActivity.this, "Item Clicked", Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(MainActivity.this, DetailActivity.class);
+                intent.putExtra("todo", todo);
+                startActivity(intent);
+            }
+        });
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         this.binding.mainRcvTodo.setLayoutManager(layoutManager);

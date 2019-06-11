@@ -9,22 +9,25 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bankmandiri.helloandroid2.R;
+import com.bankmandiri.helloandroid2.detail.OnItemClickListener;
 import com.bankmandiri.helloandroid2.model.Todo;
 
 public class TodoViewHolder extends RecyclerView.ViewHolder {
     private ItemTodoBinding binding;
-//    private ImageView avatar;
-//    private TextView name;
 
     public TodoViewHolder(@NonNull ItemTodoBinding binding) {
         super(binding.getRoot());
         this.binding=binding;
-//        avatar = itemView.findViewById(R.id.avatar);
-//        name = itemView.findViewById(R.id.name);
     }
 
-    public void bind(Todo todo) {
+    public void bind(final Todo todo,final OnItemClickListener listener) {
             binding.setTodo(todo);
-//        name.setText(todo.getName());
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.onItemClick(todo);
+                }
+            });
+
     }
 }
