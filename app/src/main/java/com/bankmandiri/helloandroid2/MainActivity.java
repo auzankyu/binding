@@ -1,23 +1,25 @@
 package com.bankmandiri.helloandroid2;
 
-import android.support.v7.app.AppCompatActivity;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.EditText;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.bankmandiri.helloandroid2.adapter.TodoAdapter;
 import com.bankmandiri.helloandroid2.databinding.ActivityMainBinding;
+import com.bankmandiri.helloandroid2.dialog.AddDialog;
+import com.bankmandiri.helloandroid2.dialog.AddDialogListener;
 import com.bankmandiri.helloandroid2.model.Todo;
-import android.databinding.DataBindingUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, AddDialogListener {
 
     TodoAdapter adapter;
     ActivityMainBinding binding;
@@ -28,14 +30,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+        setSupportActionBar(binding.toolbar);
         initList();
         binding.add.setOnClickListener(this);
     }
 
     private void initList() {
         List<Todo> users = new ArrayList<>();
-        users.add(new Todo("anka", false));
-        users.add(new Todo("ahda", true));
+        users.add(new Todo("lazuardi", false));
+        users.add(new Todo("auzan", true));
         adapter = new TodoAdapter(users);
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
@@ -50,5 +53,40 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             binding.todo.setText("");
         }
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.list_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_add:
+                menuAdd();
+                return true;
+            case R.id.menu_setting:
+                menuSetting();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void menuAdd() {
+        Toast.makeText(this, "Add Me", Toast.LENGTH_SHORT).show();
+        AddDialog dialog = new AddDialog(this);
+        dialog.show();
+    }
+
+    private void menuSetting() {
+        Toast.makeText(this,"Go to Setting", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onAdd(String name, boolean done) {
+        adapter.add(new Todo(name, done));
     }
 }
