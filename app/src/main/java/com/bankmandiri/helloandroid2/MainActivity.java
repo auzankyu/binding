@@ -3,6 +3,7 @@ package com.bankmandiri.helloandroid2;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -26,6 +27,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     TodoAdapter adapter;
     ActivityMainBinding binding;
+    final int EDIT_REQUEST_CODE = 200;
 
 
     @Override
@@ -48,7 +50,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Toast.makeText(MainActivity.this, "Item Clicked", Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(MainActivity.this, DetailActivity.class);
                 intent.putExtra("todo", todo);
-                startActivity(intent);
+                startActivityForResult(intent, EDIT_REQUEST_CODE);
             }
         });
 
@@ -64,6 +66,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             binding.todo.setText("");
         }
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if(requestCode == EDIT_REQUEST_CODE && resultCode == RESULT_OK) {
+            Todo todo = data.getExtras().getParcelable("todo");
+            Toast.makeText(MainActivity.this, todo.getName(), Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
